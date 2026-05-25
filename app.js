@@ -5,13 +5,18 @@
    ============================================================ */
 
 const STORAGE_KEY = 'tutor.state.v1';
+const THEME_KEY = 'tutor.theme';
+
+// Unlimited mode — hearts never run out, gems never block.
+// The learner is never stopped because of meta-currency.
+const UNLIMITED = true;
 
 const DEFAULT_STATE = {
   user: {
     xp: 0,
-    hearts: 5,
-    maxHearts: 5,
-    gems: 50,
+    hearts: UNLIMITED ? 999999 : 5,
+    maxHearts: UNLIMITED ? 999999 : 5,
+    gems: UNLIMITED ? 999999 : 50,
     streak: 0,
     lastActiveDate: null,
     name: 'Coder'
@@ -234,11 +239,11 @@ function shuffle(arr) {
    ============================================================ */
 function refreshStats() {
   $('statStreak').textContent = state.user.streak;
-  $('statGems').textContent = state.user.gems;
-  $('statHearts').textContent = state.user.hearts;
+  $('statGems').textContent = UNLIMITED ? '∞' : state.user.gems;
+  $('statHearts').textContent = UNLIMITED ? '∞' : state.user.hearts;
   $('statXP').textContent = state.user.xp;
   $('statXP2').textContent = state.user.xp;
-  $('statHearts2').textContent = state.user.hearts;
+  $('statHearts2').textContent = UNLIMITED ? '∞' : state.user.hearts;
 }
 
 /* ============================================================
@@ -689,7 +694,7 @@ function startLesson(courseId, lessonId) {
   const lesson = course.units.flatMap(u => u.lessons).find(l => l.id === lessonId);
   if (!lesson) return;
 
-  if (state.user.hearts <= 0) { openModal('outOfHeartsModal'); return; }
+  if (!UNLIMITED && state.user.hearts <= 0) { openModal('outOfHeartsModal'); return; }
 
   lessonRun = {
     courseId, lessonId,
@@ -714,7 +719,7 @@ function refreshLessonHeader() {
   if (!lessonRun) return;
   const pct = (lessonRun.index / lessonRun.total) * 100;
   $('lessonProgressFill').style.width = pct + '%';
-  $('lessonHearts').textContent = state.user.hearts;
+  $('lessonHearts').textContent = UNLIMITED ? '∞' : state.user.hearts;
 }
 
 function renderCurrentChallenge() {
@@ -1271,12 +1276,14 @@ function handleCheck() {
     showInlineFeedback(true, detail || pickPraise());
   } else {
     lessonRun.mistakes += 1;
-    state.user.hearts = Math.max(0, state.user.hearts - 1);
+    if (!UNLIMITED) state.user.hearts = Math.max(0, state.user.hearts - 1);
     saveState();
     Sound.wrong();
-    Sound.heartLose();
-    const h = $('lessonHearts');
-    h.classList.remove('heart-break'); void h.offsetWidth; h.classList.add('heart-break');
+    if (!UNLIMITED) {
+      Sound.heartLose();
+      const h = $('lessonHearts');
+      h.classList.remove('heart-break'); void h.offsetWidth; h.classList.add('heart-break');
+    }
     // shake the whole challenge container subtly
     const cc = $('challengeContainer');
     if (cc) { cc.style.animation = 'none'; void cc.offsetWidth; cc.style.animation = 'shake 0.45s'; }
@@ -1284,7 +1291,7 @@ function handleCheck() {
     showInlineFeedback(false, detail || 'Take another look!');
   }
 
-  if (state.user.hearts <= 0 && !correct) {
+  if (!UNLIMITED && state.user.hearts <= 0 && !correct) {
     // out of hearts after wrong answer — show modal after a beat
     setTimeout(() => openModal('outOfHeartsModal'), 600);
   }
@@ -1507,12 +1514,35 @@ function setup() {
   });
   $('soundToggle').textContent = state.soundOn ? '🔊' : '🔇';
 
+  setupTheme();
+
   // If user has existing progress, skip splash on revisit
   if (state.user.xp > 0 || Object.keys(state.progress).length > 0) {
     updateStreak();
     renderHome();
     showScreen('home');
   }
+}
+
+function setupTheme() {
+  const stored = (() => { try { return localStorage.getItem(THEME_KEY); } catch { return null; } })();
+  const prefersDark = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches;
+  const initial = stored || (prefersDark ? 'dark' : 'light');
+  applyTheme(initial);
+  const btn = $('themeToggle');
+  if (!btn) return;
+  btn.addEventListener('click', () => {
+    const next = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark';
+    applyTheme(next);
+    try { localStorage.setItem(THEME_KEY, next); } catch {}
+    Sound.tap();
+  });
+}
+
+function applyTheme(theme) {
+  document.documentElement.dataset.theme = theme;
+  const btn = $('themeToggle');
+  if (btn) btn.textContent = theme === 'dark' ? '☀️' : '🌙';
 }
 
 document.addEventListener('DOMContentLoaded', setup);
