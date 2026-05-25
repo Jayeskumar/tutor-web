@@ -1,0 +1,231 @@
+/* ============================================================
+   Tutor — animations
+   ============================================================ */
+
+@keyframes screenIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes challengeIn {
+  from { opacity: 0; transform: translateY(20px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes mascotBob {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-8px) rotate(2deg); }
+}
+
+@keyframes mascotCelebrate {
+  0% { transform: scale(0) rotate(-20deg); opacity: 0; }
+  50% { transform: scale(1.15) rotate(8deg); }
+  70% { transform: scale(0.95) rotate(-4deg); }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+
+@keyframes pulse {
+  0%, 100% { box-shadow: 0 6px 0 var(--green-dark), 0 0 0 0 rgba(88,204,2,0.5); }
+  50% { box-shadow: 0 6px 0 var(--green-dark), 0 0 0 14px rgba(88,204,2,0); }
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-8px); }
+  40% { transform: translateX(8px); }
+  60% { transform: translateX(-6px); }
+  80% { transform: translateX(6px); }
+}
+
+@keyframes correctPulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+  100% { transform: scale(1); }
+}
+
+@keyframes matchPop {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.08); }
+  100% { transform: scale(1); }
+}
+
+@keyframes popIn {
+  0% { opacity: 0; transform: translateX(-50%) scale(0.7) translateY(10px); }
+  100% { opacity: 1; transform: translateX(-50%) scale(1) translateY(0); }
+}
+
+@keyframes modalPop {
+  0% { opacity: 0; transform: scale(0.85); }
+  100% { opacity: 1; transform: scale(1); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes floatDrift {
+  0% { transform: translate(0, 0) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translate(60px, -80px) rotate(20deg); opacity: 0; }
+}
+
+@keyframes statPop {
+  from { opacity: 0; transform: translateY(20px) scale(0.9); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes confettiFall {
+  0% { transform: translateY(-100px) rotate(0); opacity: 1; }
+  100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+}
+
+.confetti-piece {
+  position: absolute;
+  width: 12px;
+  height: 12px;
+  top: -20px;
+  animation: confettiFall linear forwards;
+  pointer-events: none;
+}
+
+@keyframes heartBreak {
+  0% { transform: scale(1); }
+  30% { transform: scale(1.3); }
+  60% { transform: scale(0.85); }
+  100% { transform: scale(1); }
+}
+.heart-break { animation: heartBreak 0.5s ease; }
+
+@keyframes xpBoost {
+  0% { transform: scale(1); color: var(--text); }
+  30% { transform: scale(1.4); color: var(--gold); }
+  100% { transform: scale(1); color: var(--text); }
+}
+.xp-boost { animation: xpBoost 0.6s ease; }
+
+@keyframes streakBoost {
+  0% { transform: scale(1); }
+  40% { transform: scale(1.5) rotate(-10deg); }
+  70% { transform: scale(1.1) rotate(8deg); }
+  100% { transform: scale(1) rotate(0); }
+}
+.streak-boost { animation: streakBoost 0.7s ease; }
+
+@keyframes slideRight {
+  from { transform: translateX(-30px); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@keyframes blinkCursor {
+  0%, 50% { opacity: 1; }
+  51%, 100% { opacity: 0; }
+}
+.typing-cursor::after {
+  content: '|';
+  margin-left: 1px;
+  animation: blinkCursor 0.8s steps(1) infinite;
+  color: var(--purple);
+}
+
+/* Lesson node ripple */
+@keyframes ripple {
+  0% { box-shadow: 0 0 0 0 rgba(88,204,2,0.5); }
+  100% { box-shadow: 0 0 0 30px rgba(88,204,2,0); }
+}
+
+@keyframes rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+.floating { animation: float 2.5s ease-in-out infinite; }
+
+/* Token tap effect */
+@keyframes tokenLand {
+  0% { transform: scale(1.15); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+.token-landing { animation: tokenLand 0.25s ease-out; }
+
+/* ============================================================
+   New keyframes for the extra polish
+   ============================================================ */
+
+@keyframes optionSlideIn {
+  from { opacity: 0; transform: translateX(-12px) scale(0.97); }
+  to   { opacity: 1; transform: translateX(0) scale(1); }
+}
+
+@keyframes floatUpXP {
+  0%   { transform: translateY(0) scale(0.6); opacity: 0; }
+  20%  { transform: translateY(-12px) scale(1.25); opacity: 1; }
+  100% { transform: translateY(-90px) scale(1); opacity: 0; }
+}
+
+@keyframes sparkleSpin {
+  0%   { transform: translate(0, 0) rotate(0deg) scale(0.4); opacity: 1; }
+  100% { transform: translate(var(--dx, 0), var(--dy, -60px)) rotate(360deg) scale(1.1); opacity: 0; }
+}
+
+@keyframes burstFly {
+  0%   { transform: translate(0, 0) scale(0.4); opacity: 1; }
+  100% { transform: translate(var(--dx, 0), var(--dy, -80px)) scale(1) rotate(360deg); opacity: 0; }
+}
+
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.4; transform: scale(1); }
+  50%      { opacity: 0.9; transform: scale(1.06); }
+}
+
+@keyframes wiggle {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-14deg); }
+  50% { transform: rotate(12deg); }
+  75% { transform: rotate(-6deg); }
+}
+
+@keyframes flameFlicker {
+  0%, 100% { transform: scale(1) rotate(-1deg); filter: drop-shadow(0 0 6px rgba(255,150,0,0.5)); }
+  50%      { transform: scale(1.08) rotate(2deg); filter: drop-shadow(0 0 10px rgba(255,150,0,0.85)); }
+}
+
+@keyframes cardSlide {
+  from { opacity: 0; transform: translateY(16px) scale(0.985); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes feedbackSlide {
+  from { transform: translateY(20px); opacity: 0; }
+  to   { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes bouncePop {
+  0%   { transform: scale(0); }
+  60%  { transform: scale(1.15); }
+  100% { transform: scale(1); }
+}
+
+@keyframes lessonNodeBounce {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-6px); }
+}
+
+/* Sparkle character variants (rotated stars) */
+.sparkle.star1::before { content: '✦'; color: #ffc800; }
+.sparkle.star2::before { content: '✧'; color: #58cc02; }
+.sparkle.star3::before { content: '★'; color: #1cb0f6; }
+.sparkle.star4::before { content: '✨'; }
+.sparkle.star5::before { content: '⭐'; }
+.sparkle.dot::before   { content: '●'; color: #ff79c6; font-size: 8px; }
+
+/* Reveal up on chapter content */
+@keyframes revealUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

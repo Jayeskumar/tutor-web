@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>Tutor — Learn to code, the fun way</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css?v=20" />
+  <link rel="stylesheet" href="animations.css?v=20" />
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+  <meta http-equiv="Pragma" content="no-cache" />
+  <meta http-equiv="Expires" content="0" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A4%96%3C/text%3E%3C/svg%3E">
+</head>
+<body>
+
+  <!-- ===== Splash / Onboarding ===== -->
+  <section id="screen-splash" class="screen active">
+    <div class="splash-bg">
+      <div class="floating-code">{ }</div>
+      <div class="floating-code">&lt;/&gt;</div>
+      <div class="floating-code">[ ]</div>
+      <div class="floating-code">( )</div>
+      <div class="floating-code">=&gt;</div>
+      <div class="floating-code">++</div>
+      <div class="floating-code">!=</div>
+      <div class="floating-code">&&</div>
+    </div>
+    <div class="splash-content">
+      <div class="mascot-large" id="splashMascot">
+        <!-- mascot svg injected by JS -->
+      </div>
+      <h1 class="splash-title">Tutor</h1>
+      <p class="splash-tagline">Learn coding the fun way.<br/>Bite-sized lessons. Big results.</p>
+      <button class="btn btn-primary btn-large" id="splashStartBtn">
+        Get Started <span class="btn-arrow">→</span>
+      </button>
+      <p class="splash-sub">Free. Interactive. Made with care.</p>
+    </div>
+  </section>
+
+  <!-- ===== Home / Course picker ===== -->
+  <section id="screen-home" class="screen">
+    <header class="top-bar">
+      <div class="brand">
+        <span class="brand-logo">🤖</span>
+        <span class="brand-name">Tutor</span>
+      </div>
+      <div class="stats">
+        <div class="stat" title="Streak"><span class="stat-icon flame">🔥</span><span class="stat-val" id="statStreak">0</span></div>
+        <div class="stat" title="Gems"><span class="stat-icon gem">💎</span><span class="stat-val" id="statGems">0</span></div>
+        <div class="stat" title="Hearts"><span class="stat-icon heart">❤️</span><span class="stat-val" id="statHearts">5</span></div>
+        <div class="stat" title="XP"><span class="stat-icon">⚡</span><span class="stat-val" id="statXP">0</span></div>
+      </div>
+    </header>
+
+    <main class="home-main">
+      <div class="welcome-card">
+        <div class="welcome-mascot" id="homeMascot"></div>
+        <div class="welcome-text">
+          <h2 id="welcomeTitle">Welcome back!</h2>
+          <p id="welcomeSub">Pick a course and start your streak today.</p>
+        </div>
+      </div>
+
+      <h3 class="section-title">Your Courses</h3>
+      <div class="course-grid" id="courseGrid"></div>
+
+      <div class="motivation-banner">
+        <div class="motivation-icon">🎯</div>
+        <div class="motivation-text">
+          <strong>Challenge yourself daily.</strong><br/>
+          Just 5 minutes a day builds real skills.
+        </div>
+      </div>
+    </main>
+  </section>
+
+  <!-- ===== Course / Skill tree ===== -->
+  <section id="screen-course" class="screen">
+    <header class="top-bar course-top-bar">
+      <button class="icon-btn" id="courseBackBtn" aria-label="Back">←</button>
+      <div class="course-header-info">
+        <div class="course-header-icon" id="courseHeaderIcon">☕</div>
+        <div>
+          <div class="course-header-name" id="courseHeaderName">Java</div>
+          <div class="course-header-sub" id="courseHeaderSub">0 / 0 lessons</div>
+        </div>
+      </div>
+      <div class="stats compact">
+        <div class="stat"><span class="stat-icon">⚡</span><span class="stat-val" id="statXP2">0</span></div>
+        <div class="stat"><span class="stat-icon">❤️</span><span class="stat-val" id="statHearts2">5</span></div>
+      </div>
+    </header>
+
+    <div class="course-tabs">
+      <button class="course-tab active" data-tab="learn" id="tabLearn">📖 Learn</button>
+      <button class="course-tab" data-tab="practice" id="tabPractice">🎯 Practice</button>
+    </div>
+
+    <!-- Scroll-progress indicator (Learn mode) -->
+    <div class="read-progress" id="readProgress"><div class="read-progress-fill" id="readProgressFill"></div></div>
+
+    <main class="course-main">
+      <div class="course-progress-bar" id="courseProgressBarWrap">
+        <div class="course-progress-fill" id="courseProgressFill"></div>
+      </div>
+      <!-- Practice view (skill tree) -->
+      <div class="skill-tree" id="skillTree" style="display:none"></div>
+      <!-- Learn view (chapters) -->
+      <div class="learn-view" id="learnView">
+        <aside class="chapter-list" id="chapterList"></aside>
+        <article class="chapter-body" id="chapterBody"></article>
+      </div>
+    </main>
+
+    <!-- Floating back-to-top button (Learn mode) -->
+    <button class="back-to-top" id="backToTopBtn" aria-label="Back to top">↑</button>
+  </section>
+
+  <!-- ===== Lesson ===== -->
+  <section id="screen-lesson" class="screen">
+    <header class="lesson-top-bar">
+      <button class="icon-btn" id="lessonQuitBtn" aria-label="Quit">✕</button>
+      <div class="lesson-progress-track">
+        <div class="lesson-progress-fill" id="lessonProgressFill"></div>
+      </div>
+      <div class="lesson-hearts">
+        <span class="heart-icon">❤️</span>
+        <span id="lessonHearts">5</span>
+      </div>
+    </header>
+
+    <main class="lesson-main">
+      <div class="challenge-container" id="challengeContainer">
+        <!-- challenge renders here -->
+      </div>
+    </main>
+
+    <footer class="lesson-footer" id="lessonFooter">
+      <div class="feedback-bar" id="feedbackBar">
+        <div class="feedback-content">
+          <span class="feedback-icon" id="feedbackIcon"></span>
+          <div class="feedback-text">
+            <div class="feedback-title" id="feedbackTitle"></div>
+            <div class="feedback-detail" id="feedbackDetail"></div>
+          </div>
+        </div>
+      </div>
+      <button class="btn btn-primary btn-check" id="checkBtn" disabled>Check</button>
+    </footer>
+  </section>
+
+  <!-- ===== Lesson complete ===== -->
+  <section id="screen-complete" class="screen">
+    <div class="complete-content">
+      <div class="confetti-host" id="confettiHost"></div>
+      <div class="mascot-celebrate" id="completeMascot"></div>
+      <h1 class="complete-title">Lesson Complete!</h1>
+      <p class="complete-sub" id="completeSub">You crushed it!</p>
+
+      <div class="complete-stats">
+        <div class="complete-stat xp-stat">
+          <div class="complete-stat-label">XP Gained</div>
+          <div class="complete-stat-value">⚡ <span id="completeXP">10</span></div>
+        </div>
+        <div class="complete-stat accuracy-stat">
+          <div class="complete-stat-label">Accuracy</div>
+          <div class="complete-stat-value">🎯 <span id="completeAccuracy">100</span>%</div>
+        </div>
+        <div class="complete-stat time-stat">
+          <div class="complete-stat-label">Time</div>
+          <div class="complete-stat-value">⏱️ <span id="completeTime">2:30</span></div>
+        </div>
+      </div>
+
+      <button class="btn btn-primary btn-large" id="completeContinueBtn">Continue →</button>
+    </div>
+  </section>
+
+  <!-- ===== Out of hearts modal ===== -->
+  <div class="modal-backdrop" id="outOfHeartsModal">
+    <div class="modal">
+      <div class="modal-mascot">😢</div>
+      <h2>Out of Hearts!</h2>
+      <p>You ran out of hearts. Take a break, or use gems to refill.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="ohQuitBtn">Quit Lesson</button>
+        <button class="btn btn-primary" id="ohRefillBtn">💎 Refill (10 gems)</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Quit confirm modal ===== -->
+  <div class="modal-backdrop" id="quitModal">
+    <div class="modal">
+      <div class="modal-mascot">🤔</div>
+      <h2>Quit lesson?</h2>
+      <p>You'll lose your progress in this lesson.</p>
+      <div class="modal-actions">
+        <button class="btn btn-secondary" id="quitStayBtn">Keep going</button>
+        <button class="btn btn-danger" id="quitConfirmBtn">Quit</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== Sound toggle (floating) ===== -->
+  <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
+
+  <script src="data.js?v=20"></script>
+  <!-- programming -->
+  <script src="courses/programming/java.js?v=20"></script>
+  <script src="courses/programming/dsa.js?v=20"></script>
+  <script src="courses/programming/dsa-java.js?v=20"></script>
+  <script src="courses/programming/oop-java.js?v=20"></script>
+  <!-- cs foundations -->
+  <script src="courses/cs-foundations/algorithms.js?v=20"></script>
+  <script src="courses/cs-foundations/ml.js?v=20"></script>
+  <script src="courses/cs-foundations/math.js?v=20"></script>
+  <!-- career -->
+  <script src="courses/career/aptitude.js?v=20"></script>
+  <script src="courses/career/reasoning.js?v=20"></script>
+  <script src="courses/career/interview.js?v=20"></script>
+  <script src="courses/career/ai-engineer.js?v=20"></script>
+  <script src="courses/career/coding-interview.js?v=20"></script>
+  <script src="courses/career/lld.js?v=20"></script>
+  <script src="courses/career/api-design.js?v=20"></script>
+  <script src="courses/career/mern.js?v=20"></script>
+  <script src="courses/career/linux.js?v=20"></script>
+  <script src="courses/career/sql.js?v=20"></script>
+  <!-- gate exam prep -->
+  <script src="courses/gate/gate-cs.js?v=20"></script>
+  <script src="courses/gate/gate-da.js?v=20"></script>
+  <!-- learn mode -->
+  <script src="learn-widgets.js?v=20"></script>
+  <script src="learn-data.js?v=20"></script>
+  <script src="learn/java.js?v=20"></script>
+  <script src="learn/dsa.js?v=20"></script>
+  <script src="learn/dsa-java.js?v=20"></script>
+  <script src="learn/algorithms.js?v=20"></script>
+  <script src="learn/ml.js?v=20"></script>
+  <script src="learn/math.js?v=20"></script>
+  <script src="learn/aptitude.js?v=20"></script>
+  <script src="learn/reasoning.js?v=20"></script>
+  <script src="learn/interview.js?v=20"></script>
+  <script src="learn/gate-cs.js?v=20"></script>
+  <script src="learn/gate-da.js?v=20"></script>
+  <script src="learn/ai-engineer.js?v=20"></script>
+  <script src="learn/coding-interview.js?v=20"></script>
+  <script src="learn/lld.js?v=20"></script>
+  <script src="learn/api-design.js?v=20"></script>
+  <script src="learn/mern.js?v=20"></script>
+  <script src="learn/linux.js?v=20"></script>
+  <script src="learn/sql.js?v=20"></script>
+  <script src="learn/oop-java.js?v=20"></script>
+  <script src="app.js?v=20"></script>
+</body>
+</html>
