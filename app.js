@@ -262,33 +262,112 @@ function setupSplash() {
 /* ============================================================
    Home screen
    ============================================================ */
+/* Categories — map each course id to its category, used for sectioned home view + filtering */
+const CATEGORIES = [
+  { id: 'programming',    name: 'Programming',     icon: '💻',
+    ids: ['java','dsa','dsa-java','oop-java','git','spring'] },
+  { id: 'cs-foundations', name: 'CS Foundations',  icon: '🎓',
+    ids: ['algorithms','ml','math','cs-fundamentals','networking','os'] },
+  { id: 'career',         name: 'Career & DevOps', icon: '🚀',
+    ids: ['aptitude','reasoning','interview','ai-engineer','coding-interview','lld',
+          'api-design','mern','linux','sql','hld','leetcode-patterns','verbal','facts',
+          'cybersecurity','microservices','cloud','kafka','docker','kubernetes'] },
+  { id: 'gate',           name: 'GATE Exam Prep',  icon: '📚',
+    ids: ['gate-cs','gate-da'] }
+];
+const COURSE_CATEGORY = (() => {
+  const m = {};
+  for (const cat of CATEGORIES) for (const id of cat.ids) m[id] = cat.id;
+  return m;
+})();
+
+/* Home-screen UI state — not persisted */
+let homeFilter = 'all';
+let homeSearch = '';
+
 function renderHome() {
   refreshStats();
   $('homeMascot').innerHTML = MASCOT_SVG;
   const greeting = greetingText();
   $('welcomeTitle').textContent = greeting.title;
   $('welcomeSub').textContent = greeting.sub;
+  renderHomeToolbar();
+  renderHomeSections();
+}
 
-  const grid = $('courseGrid');
-  grid.innerHTML = '';
-  for (const course of COURSES) {
-    const total = totalLessons(course);
-    const done = completedLessons(course);
-    const pct = total ? (done / total) * 100 : 0;
-    const card = el('div', { class: 'course-card', onclick: () => openCourse(course.id) });
-    card.appendChild(el('div', { class: 'course-card-bg', style: `background:${course.color}` }));
-    const icon = el('div', { class: 'course-icon', style: `background:${course.color}22; color:${course.color}` });
-    icon.textContent = course.icon;
-    card.appendChild(icon);
-    card.appendChild(el('h3', { class: 'course-name' }, course.name));
-    card.appendChild(el('p', { class: 'course-desc' }, course.description));
-    const bar = el('div', { class: 'course-progress' });
-    const fill = el('div', { class: 'course-progress-fill', style: `width:${pct}%; background:${course.color}` });
-    bar.appendChild(fill);
-    card.appendChild(bar);
-    card.appendChild(el('div', { class: 'course-progress-text' }, `${done} / ${total} lessons`));
-    grid.appendChild(card);
+function renderHomeToolbar() {
+  const filters = $('courseFilters');
+  if (!filters.dataset.built) {
+    const allBtn = el('button', { class: 'course-filter' + (homeFilter==='all'?' active':''), type:'button',
+      onclick: () => { homeFilter='all'; renderHomeToolbar(); renderHomeSections(); } }, 'All');
+    filters.appendChild(allBtn);
+    for (const cat of CATEGORIES) {
+      const b = el('button', { class: 'course-filter' + (homeFilter===cat.id?' active':''), type:'button',
+        onclick: () => { homeFilter = cat.id; renderHomeToolbar(); renderHomeSections(); } });
+      b.innerHTML = `<span class="filter-icon">${cat.icon}</span> ${cat.name}`;
+      filters.appendChild(b);
+    }
+    const search = $('courseSearch');
+    search.addEventListener('input', () => { homeSearch = search.value; renderHomeSections(); });
+    search.addEventListener('keydown', e => { if (e.key === 'Escape') { search.value=''; homeSearch=''; renderHomeSections(); } });
+    $('searchClear').addEventListener('click', () => { search.value=''; homeSearch=''; renderHomeSections(); search.focus(); });
+    filters.dataset.built = '1';
+  } else {
+    // re-tag active filter
+    [...filters.children].forEach((b, i) => {
+      const id = i === 0 ? 'all' : CATEGORIES[i-1].id;
+      b.classList.toggle('active', homeFilter === id);
+    });
   }
+  $('searchClear').style.display = homeSearch ? 'flex' : 'none';
+}
+
+function renderHomeSections() {
+  const host = $('courseSections');
+  host.innerHTML = '';
+  const q = homeSearch.trim().toLowerCase();
+  const visibleCats = homeFilter === 'all' ? CATEGORIES : CATEGORIES.filter(c => c.id === homeFilter);
+  let anyShown = false;
+
+  for (const cat of visibleCats) {
+    const courses = cat.ids
+      .map(id => COURSES.find(c => c.id === id))
+      .filter(Boolean)
+      .filter(c => !q || c.name.toLowerCase().includes(q) || (c.description||'').toLowerCase().includes(q));
+    if (!courses.length) continue;
+    anyShown = true;
+
+    const section = el('section', { class: 'course-section' });
+    const header = el('div', { class: 'course-section-header' });
+    header.innerHTML = `<span class="course-section-icon">${cat.icon}</span><h3 class="course-section-title">${cat.name}</h3><span class="course-section-count">${courses.length}</span>`;
+    section.appendChild(header);
+
+    const grid = el('div', { class: 'course-grid' });
+    for (const course of courses) grid.appendChild(buildCourseCard(course));
+    section.appendChild(grid);
+    host.appendChild(section);
+  }
+
+  $('courseNoResults').hidden = anyShown;
+}
+
+function buildCourseCard(course) {
+  const total = totalLessons(course);
+  const done = completedLessons(course);
+  const pct = total ? (done / total) * 100 : 0;
+  const card = el('div', { class: 'course-card', onclick: () => openCourse(course.id) });
+  card.appendChild(el('div', { class: 'course-card-bg', style: `background:${course.color}` }));
+  const icon = el('div', { class: 'course-icon', style: `background:${course.color}22; color:${course.color}` });
+  icon.textContent = course.icon;
+  card.appendChild(icon);
+  card.appendChild(el('h3', { class: 'course-name' }, course.name));
+  card.appendChild(el('p', { class: 'course-desc' }, course.description));
+  const bar = el('div', { class: 'course-progress' });
+  const fill = el('div', { class: 'course-progress-fill', style: `width:${pct}%; background:${course.color}` });
+  bar.appendChild(fill);
+  card.appendChild(bar);
+  card.appendChild(el('div', { class: 'course-progress-text' }, `${done} / ${total} lessons`));
+  return card;
 }
 
 function greetingText() {

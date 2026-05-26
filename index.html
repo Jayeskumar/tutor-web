@@ -7,8 +7,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="styles.css?v=25" />
-  <link rel="stylesheet" href="animations.css?v=25" />
+  <link rel="stylesheet" href="styles.css?v=26" />
+  <link rel="stylesheet" href="animations.css?v=26" />
   <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
   <meta http-equiv="Pragma" content="no-cache" />
   <meta http-equiv="Expires" content="0" />
@@ -65,8 +65,19 @@
         </div>
       </div>
 
-      <h3 class="section-title">Your Courses</h3>
-      <div class="course-grid" id="courseGrid"></div>
+      <div class="course-toolbar">
+        <div class="course-search">
+          <span class="search-icon">🔍</span>
+          <input type="search" id="courseSearch" placeholder="Search courses…" autocomplete="off" spellcheck="false" />
+          <button class="search-clear" id="searchClear" type="button" aria-label="Clear search">×</button>
+        </div>
+        <div class="course-filters" id="courseFilters"></div>
+      </div>
+      <div class="course-sections" id="courseSections"></div>
+      <div class="course-no-results" id="courseNoResults" hidden>
+        <div class="no-results-icon">🔎</div>
+        <p>No courses match. Try a different search or filter.</p>
+      </div>
 
       <div class="motivation-banner">
         <div class="motivation-icon">🎯</div>
@@ -210,82 +221,82 @@
   <button class="sound-toggle" id="soundToggle" aria-label="Toggle sound">🔊</button>
   <button class="theme-toggle" id="themeToggle" aria-label="Toggle dark mode">🌙</button>
 
-  <script src="data.js?v=25"></script>
+  <script src="data.js?v=26"></script>
   <!-- programming -->
-  <script src="courses/programming/java.js?v=25"></script>
-  <script src="courses/programming/dsa.js?v=25"></script>
-  <script src="courses/programming/dsa-java.js?v=25"></script>
-  <script src="courses/programming/oop-java.js?v=25"></script>
-  <script src="courses/programming/git.js?v=25"></script>
-  <script src="courses/programming/spring.js?v=25"></script>
+  <script src="courses/programming/java.js?v=26"></script>
+  <script src="courses/programming/dsa.js?v=26"></script>
+  <script src="courses/programming/dsa-java.js?v=26"></script>
+  <script src="courses/programming/oop-java.js?v=26"></script>
+  <script src="courses/programming/git.js?v=26"></script>
+  <script src="courses/programming/spring.js?v=26"></script>
   <!-- cs foundations -->
-  <script src="courses/cs-foundations/algorithms.js?v=25"></script>
-  <script src="courses/cs-foundations/ml.js?v=25"></script>
-  <script src="courses/cs-foundations/math.js?v=25"></script>
-  <script src="courses/cs-foundations/cs-fundamentals.js?v=25"></script>
-  <script src="courses/cs-foundations/networking.js?v=25"></script>
-  <script src="courses/cs-foundations/os.js?v=25"></script>
+  <script src="courses/cs-foundations/algorithms.js?v=26"></script>
+  <script src="courses/cs-foundations/ml.js?v=26"></script>
+  <script src="courses/cs-foundations/math.js?v=26"></script>
+  <script src="courses/cs-foundations/cs-fundamentals.js?v=26"></script>
+  <script src="courses/cs-foundations/networking.js?v=26"></script>
+  <script src="courses/cs-foundations/os.js?v=26"></script>
   <!-- career -->
-  <script src="courses/career/aptitude.js?v=25"></script>
-  <script src="courses/career/reasoning.js?v=25"></script>
-  <script src="courses/career/interview.js?v=25"></script>
-  <script src="courses/career/ai-engineer.js?v=25"></script>
-  <script src="courses/career/coding-interview.js?v=25"></script>
-  <script src="courses/career/lld.js?v=25"></script>
-  <script src="courses/career/api-design.js?v=25"></script>
-  <script src="courses/career/mern.js?v=25"></script>
-  <script src="courses/career/linux.js?v=25"></script>
-  <script src="courses/career/sql.js?v=25"></script>
-  <script src="courses/career/hld.js?v=25"></script>
-  <script src="courses/career/leetcode-patterns.js?v=25"></script>
-  <script src="courses/career/verbal.js?v=25"></script>
-  <script src="courses/career/facts.js?v=25"></script>
-  <script src="courses/career/cybersecurity.js?v=25"></script>
-  <script src="courses/career/microservices.js?v=25"></script>
-  <script src="courses/career/cloud.js?v=25"></script>
-  <script src="courses/career/kafka.js?v=25"></script>
-  <script src="courses/career/docker.js?v=25"></script>
-  <script src="courses/career/kubernetes.js?v=25"></script>
+  <script src="courses/career/aptitude.js?v=26"></script>
+  <script src="courses/career/reasoning.js?v=26"></script>
+  <script src="courses/career/interview.js?v=26"></script>
+  <script src="courses/career/ai-engineer.js?v=26"></script>
+  <script src="courses/career/coding-interview.js?v=26"></script>
+  <script src="courses/career/lld.js?v=26"></script>
+  <script src="courses/career/api-design.js?v=26"></script>
+  <script src="courses/career/mern.js?v=26"></script>
+  <script src="courses/career/linux.js?v=26"></script>
+  <script src="courses/career/sql.js?v=26"></script>
+  <script src="courses/career/hld.js?v=26"></script>
+  <script src="courses/career/leetcode-patterns.js?v=26"></script>
+  <script src="courses/career/verbal.js?v=26"></script>
+  <script src="courses/career/facts.js?v=26"></script>
+  <script src="courses/career/cybersecurity.js?v=26"></script>
+  <script src="courses/career/microservices.js?v=26"></script>
+  <script src="courses/career/cloud.js?v=26"></script>
+  <script src="courses/career/kafka.js?v=26"></script>
+  <script src="courses/career/docker.js?v=26"></script>
+  <script src="courses/career/kubernetes.js?v=26"></script>
   <!-- gate exam prep -->
-  <script src="courses/gate/gate-cs.js?v=25"></script>
-  <script src="courses/gate/gate-da.js?v=25"></script>
+  <script src="courses/gate/gate-cs.js?v=26"></script>
+  <script src="courses/gate/gate-da.js?v=26"></script>
   <!-- learn mode -->
-  <script src="learn-widgets.js?v=25"></script>
-  <script src="learn-data.js?v=25"></script>
-  <script src="learn/java.js?v=25"></script>
-  <script src="learn/dsa.js?v=25"></script>
-  <script src="learn/dsa-java.js?v=25"></script>
-  <script src="learn/algorithms.js?v=25"></script>
-  <script src="learn/ml.js?v=25"></script>
-  <script src="learn/math.js?v=25"></script>
-  <script src="learn/aptitude.js?v=25"></script>
-  <script src="learn/reasoning.js?v=25"></script>
-  <script src="learn/interview.js?v=25"></script>
-  <script src="learn/gate-cs.js?v=25"></script>
-  <script src="learn/gate-da.js?v=25"></script>
-  <script src="learn/ai-engineer.js?v=25"></script>
-  <script src="learn/coding-interview.js?v=25"></script>
-  <script src="learn/lld.js?v=25"></script>
-  <script src="learn/api-design.js?v=25"></script>
-  <script src="learn/mern.js?v=25"></script>
-  <script src="learn/linux.js?v=25"></script>
-  <script src="learn/sql.js?v=25"></script>
-  <script src="learn/oop-java.js?v=25"></script>
-  <script src="learn/git.js?v=25"></script>
-  <script src="learn/hld.js?v=25"></script>
-  <script src="learn/leetcode-patterns.js?v=25"></script>
-  <script src="learn/verbal.js?v=25"></script>
-  <script src="learn/facts.js?v=25"></script>
-  <script src="learn/cs-fundamentals.js?v=25"></script>
-  <script src="learn/cybersecurity.js?v=25"></script>
-  <script src="learn/networking.js?v=25"></script>
-  <script src="learn/os.js?v=25"></script>
-  <script src="learn/spring.js?v=25"></script>
-  <script src="learn/microservices.js?v=25"></script>
-  <script src="learn/cloud.js?v=25"></script>
-  <script src="learn/kafka.js?v=25"></script>
-  <script src="learn/docker.js?v=25"></script>
-  <script src="learn/kubernetes.js?v=25"></script>
-  <script src="app.js?v=25"></script>
+  <script src="learn-widgets.js?v=26"></script>
+  <script src="learn-data.js?v=26"></script>
+  <script src="learn/java.js?v=26"></script>
+  <script src="learn/dsa.js?v=26"></script>
+  <script src="learn/dsa-java.js?v=26"></script>
+  <script src="learn/algorithms.js?v=26"></script>
+  <script src="learn/ml.js?v=26"></script>
+  <script src="learn/math.js?v=26"></script>
+  <script src="learn/aptitude.js?v=26"></script>
+  <script src="learn/reasoning.js?v=26"></script>
+  <script src="learn/interview.js?v=26"></script>
+  <script src="learn/gate-cs.js?v=26"></script>
+  <script src="learn/gate-da.js?v=26"></script>
+  <script src="learn/ai-engineer.js?v=26"></script>
+  <script src="learn/coding-interview.js?v=26"></script>
+  <script src="learn/lld.js?v=26"></script>
+  <script src="learn/api-design.js?v=26"></script>
+  <script src="learn/mern.js?v=26"></script>
+  <script src="learn/linux.js?v=26"></script>
+  <script src="learn/sql.js?v=26"></script>
+  <script src="learn/oop-java.js?v=26"></script>
+  <script src="learn/git.js?v=26"></script>
+  <script src="learn/hld.js?v=26"></script>
+  <script src="learn/leetcode-patterns.js?v=26"></script>
+  <script src="learn/verbal.js?v=26"></script>
+  <script src="learn/facts.js?v=26"></script>
+  <script src="learn/cs-fundamentals.js?v=26"></script>
+  <script src="learn/cybersecurity.js?v=26"></script>
+  <script src="learn/networking.js?v=26"></script>
+  <script src="learn/os.js?v=26"></script>
+  <script src="learn/spring.js?v=26"></script>
+  <script src="learn/microservices.js?v=26"></script>
+  <script src="learn/cloud.js?v=26"></script>
+  <script src="learn/kafka.js?v=26"></script>
+  <script src="learn/docker.js?v=26"></script>
+  <script src="learn/kubernetes.js?v=26"></script>
+  <script src="app.js?v=26"></script>
 </body>
 </html>
